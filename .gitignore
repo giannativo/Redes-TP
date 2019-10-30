@@ -1,0 +1,4 @@
+Client/bin
+Client/bin/*
+Server/bin
+Server/bin/*
