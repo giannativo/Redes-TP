@@ -3,6 +3,11 @@
 
 using namespace std;
 
+void send_message(SOCKET server, char *message){
+    send(server, message, sizeof(message), 0);
+    cout << "Message sent!" << endl;
+}
+
 int main()
 {
     WSADATA WSAData;
@@ -22,7 +27,7 @@ int main()
     char buffer[1024]={};
     cout << "Write message: " << endl;
     cin.getline(buffer,1024);
-    send(server, buffer, sizeof(buffer), 0);
+    send_message(server, buffer);
     cout << "Message sent!" << endl;
     closesocket(server);
     WSACleanup();
