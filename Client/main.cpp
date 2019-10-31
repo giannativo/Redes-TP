@@ -19,10 +19,11 @@ int main()
     connect(server, (SOCKADDR *)&addr, sizeof(addr));
     cout << "Connected to server!" << endl;
 
-    char buffer[1024]={'h', 'e', 'l', 'l', 'o', '.'};
+    char buffer[1024]={};
+    cout << "Write message: " << endl;
+    cin.getline(buffer,1024);
     send(server, buffer, sizeof(buffer), 0);
     cout << "Message sent!" << endl;
-
     closesocket(server);
     WSACleanup();
     cout << "Socket closed." << endl << endl;

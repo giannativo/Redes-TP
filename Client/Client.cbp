@@ -32,9 +32,6 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Linker>
-			<Add library="../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libws2_32.a" />
-		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
