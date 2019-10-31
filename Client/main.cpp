@@ -19,34 +19,12 @@ int main()
     connect(server, (SOCKADDR *)&addr, sizeof(addr));
     cout << "Connected to server!" << endl;
 
-    cout << "Ingrese Comando: (M) para mandar un mensaje, (T) para transferencia de archivo, (F) para cerrar la conexion."
-    char comando[100];
-    cin.getline(comando,100);
-
-    if(comando=='(M)'){
-
-    SendMessage();
-
-    }else if(comando=='(T)'){
-
-    SendArchivo();
-
-    }else{
+    char buffer[1024]={};
+    cout << "Write message: " << endl;
+    cin.getline(buffer,1024);
+    send(server, buffer, sizeof(buffer), 0);
+    cout << "Message sent!" << endl;
     closesocket(server);
     WSACleanup();
     cout << "Socket closed." << endl << endl;
-    }
-}
-
-void SendMessage(){
-    char buffer[1024]={};
-    cout << "Escribe el mensaje: " << endl;
-    cin.getline(buffer,1024);
-
-    send(server, buffer, sizeof(buffer), 0);
-    cout << "Message sent!" << endl;
-}
-
-void SendArchivo(){
-
 }
