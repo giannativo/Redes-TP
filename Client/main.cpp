@@ -15,21 +15,58 @@ int main()
     SOCKADDR_IN addr;
 
     WSAStartup(MAKEWORD(2,0), &WSAData);
-    server = socket(AF_INET, SOCK_STREAM, 0);
+    server = socket(PF_INET, SOCK_STREAM, 0);
 
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // replace the ip with your futur server ip address. If server AND client are running on the same computer, you can use the local ip 127.0.0.1
+    int puerto;
+    string ip;
+    cout << "Ingrese el numero de puerto en el que desea inciar el servidor" << endl;
+    cin >> puerto;
+    cin.ignore();
+    cout << "Ingrese el numero de direccion IP en el que desea inciar el servidor" << endl;
+    cin >> ip;
+    cin.ignore();
+
+    addr.sin_addr.s_addr = inet_addr(ip.data());
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(5555);
+    addr.sin_port = htons(puerto);
 
-    connect(server, (SOCKADDR *)&addr, sizeof(addr));
-    cout << "Connected to server!" << endl;
+    int conector= connect(server, (SOCKADDR *)&addr, sizeof(addr));
+    cout << "Conectando al servidor..." << endl;
 
-    char buffer[1024]={};
-    cout << "Write message: " << endl;
-    cin.getline(buffer,1024);
-    send_message(server, buffer);
-    cout << "Message sent!" << endl;
+    if(conector!=0){
+    cout << "Error de conexion" << " Ip:" << ip <<" Puerto:"<<puerto << endl;
     closesocket(server);
     WSACleanup();
-    cout << "Socket closed." << endl << endl;
+    cout << "Socket cerrado" << endl << endl;
+    exit(0);
+    }
+
+    cout << "Conectado con exito al server..." << endl;
+
+    int conexion=1;
+    char buffer[1024]={};
+
+    while(conexion!=0){
+
+    cout << "Escribe un mensaje: " << endl;
+    cin.getline(buffer,1024);
+
+    string var(buffer);
+    string substring=var.substr(0,3);
+
+        if(substring=="(M)"){
+        //llamo funcion de envio de mensaje y saco las proximas dos lineas
+        send(server, buffer, sizeof(buffer), 0);
+        cout << "Mensaje enviado!" << endl;
+        }else if(substring=="(T)"){
+        //llamo funcion de transferencia
+        }else if(substring=="(F)"){
+         send(server, buffer, sizeof(buffer), 0);
+         conexion= closesocket(server);
+         WSACleanup();
+         cout << "Se recibio una solicitud de finalizacion de la comunicacion. Se procedera a cerrar la aplicacion" << endl;
+         cout << "Servidor Desconectado" << endl;
+        }
+        memset(buffer, 0, sizeof(buffer));
+    }
 }
