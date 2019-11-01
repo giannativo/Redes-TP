@@ -57,10 +57,10 @@ int main()
         //llamo funcion de transferencia
         }else if(substring=="(F)"){
          send(server, buffer, sizeof(buffer), 0);
-         conexion=closesocket(server);
+         conexion= closesocket(server);
          WSACleanup();
-         cout << "Se recibio una solicitud de finalizacion de la comunicacion. Se procedera a cerrar al aplicacion" << endl;
-         cout << "Servidor Desconectado" <<endl;
+         cout << "Se recibio una solicitud de finalizacion de la comunicacion. Se procedera a cerrar la aplicacion" << endl;
+         cout << "Servidor Desconectado" << endl;
         }
         memset(buffer, 0, sizeof(buffer));
     }

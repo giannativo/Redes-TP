@@ -50,7 +50,7 @@ int main()
 
             if(substring=="(F)"){
             conexion= closesocket(client);
-            cout << "Se recibio una solicitud de finalizacion de la comunicacion. Se procedera a cerrar al aplicacion" << endl;
+            cout << "Se envio una solicitud de finalizacion de la comunicacion. Se procedera a cerrar la aplicacion" << endl;
             cout << "Cliente Desconectado" <<endl;
             }
         }
