@@ -32,9 +32,10 @@ int main()
     bool primerConexion=true;
     int clientAddrSize = sizeof(clientAddr);
 
-    while(conexion!=0){
-        if((client = accept(server, (SOCKADDR *)&clientAddr, &clientAddrSize)) != INVALID_SOCKET)
-        {
+
+
+    if((client = accept(server, (SOCKADDR *)&clientAddr, &clientAddrSize)) != INVALID_SOCKET){
+        while(conexion!=0){
             if(primerConexion==true){
             cout << "Se recibio una solicitud de conexion" << endl;
             cout << "Cliente conectado!!" << endl;
