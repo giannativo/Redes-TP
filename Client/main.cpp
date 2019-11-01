@@ -3,9 +3,9 @@
 
 using namespace std;
 
-void send_message(SOCKET server, char *message){
-    send(server, message, sizeof(message), 0);
-    cout << "Message sent!" << endl;
+void send_message(SOCKET server, string message){
+    send(server, message.data(), message.size(), 0);
+    cout << "Mensaje enviado!" << endl;
 }
 
 int main()
@@ -55,9 +55,7 @@ int main()
     string substring=var.substr(0,3);
 
         if(substring=="(M)"){
-        //llamo funcion de envio de mensaje y saco las proximas dos lineas
-        send(server, buffer, sizeof(buffer), 0);
-        cout << "Mensaje enviado!" << endl;
+            send_message(server, var);
         }else if(substring=="(T)"){
         //llamo funcion de transferencia
         }else if(substring=="(F)"){

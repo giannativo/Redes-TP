@@ -1,4 +1,6 @@
 Client/bin
 Client/bin/*
+Client/obj/Debug/*
 Server/bin
 Server/bin/*
+Server/obj/Debug/*
