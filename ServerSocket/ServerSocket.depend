@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1572720946 source:c:\users\luciano\desktop\serversocket\main.cpp
+	<iostream>
+	<winsock2.h>
+
