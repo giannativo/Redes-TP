@@ -1,5 +1,6 @@
 #include <iostream>
 #include <winsock2.h>
+#include <fstream>
 
 using namespace std;
 
@@ -56,7 +57,24 @@ public:
         cout << "Mensaje enviado!" << endl;
 
         }else if(substring=="(T)"|| substring=="(t)" ){
-
+        string nombre = "C:/Users/Gian/Documents/example.txt";
+        ifstream file(nombre.c_str());
+        printf( "Fichero: %s -> ", nombre );
+        if( file ){
+        printf( "creado (ABIERTO)\n" );
+        ifstream file(nombre.c_str());
+        file.seekg( 0, ios::end );
+        size_t len = file.tellg();
+        char *ret = new char[len];
+        file.seekg(0, ios::beg);
+        file.read(ret, len);
+        file.close();
+        send(server, ret, sizeof(ret), 0);
+        }
+   else
+   {
+      printf( "Error (NO ABIERTO)\n" );
+   }
         }else if(substring=="(F)"|| substring=="(f)" ){
         send(server, buffer, sizeof(buffer), 0);
         cout << "Mensaje enviado!" << endl;
