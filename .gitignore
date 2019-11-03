@@ -1,6 +1,6 @@
-Client/bin
-Client/bin/*
-Client/obj/*
-Server/bin
-Server/bin/*
-Server/obj/*
+ClienteSocket/bin
+ClienteSocket/bin/*
+ClienteSocket/obj/*
+ServerSocket/bin
+ServerSocket/bin/*
+ServerSocket/obj/*
