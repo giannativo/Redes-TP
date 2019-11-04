@@ -8,3 +8,9 @@
 	<winsock2.h>
 	<fstream>
 
+1572902622 source:c:\users\luciano\documents\github\redes-tp\clientesocket\main.cpp
+	<iostream>
+	<winsock2.h>
+	<fstream>
+	<stdio.h>
+

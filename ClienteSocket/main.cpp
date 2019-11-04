@@ -1,6 +1,7 @@
 #include <iostream>
 #include <winsock2.h>
 #include <fstream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -21,10 +22,10 @@ public:
         string ip;
         cout << "Ingrese el numero de puerto en el que desea inciar el servidor" << endl;
         cin >> puerto;
-        cin.ignore();
         cout << "Ingrese el numero de direccion IP en el que desea inciar el servidor" << endl;
-        cin >> ip;
         cin.ignore();
+        cin >> ip;
+
 
         addr.sin_addr.s_addr = inet_addr(ip.data());
         addr.sin_family = AF_INET;
@@ -47,7 +48,8 @@ public:
     void Enviar()
     {
         cout << "Escribe el mensaje a enviar: " << endl;
-        cin.getline(this->buffer,1024);
+        fflush(stdin);
+        scanf("%[^\n]",this->buffer);
 
         string var(buffer);
         string substring=var.substr(0,3);
@@ -57,31 +59,32 @@ public:
         cout << "Mensaje enviado!" << endl;
 
         }else if(substring=="(T)"|| substring=="(t)" ){
+
         string nombre = "C:/Users/Gian/Documents/example.txt";
         ifstream file(nombre.c_str());
         printf( "Fichero: %s -> ", nombre );
-        if( file ){
-        printf( "creado (ABIERTO)\n" );
-        ifstream file(nombre.c_str());
-        file.seekg( 0, ios::end );
-        size_t len = file.tellg();
-        char *ret = new char[len];
-        file.seekg(0, ios::beg);
-        file.read(ret, len);
-        file.close();
-        send(server, ret, sizeof(ret), 0);
-        }
-   else
-   {
-      printf( "Error (NO ABIERTO)\n" );
-   }
+            if( file ){
+            printf( "creado (ABIERTO)\n" );
+            ifstream file(nombre.c_str());
+            file.seekg( 0, ios::end );
+            size_t len = file.tellg();
+            char *ret = new char[len];
+            file.seekg(0, ios::beg);
+            file.read(ret, len);
+            file.close();
+            send(server, ret, sizeof(ret), 0);
+            }
+            else
+            {
+              printf( "Error (NO ABIERTO)\n" );
+            }
+
         }else if(substring=="(F)"|| substring=="(f)" ){
         send(server, buffer, sizeof(buffer), 0);
         cout << "Mensaje enviado!" << endl;
         }else{
         cout << "Error de comando!" << endl;
         memset(buffer, 0, sizeof(buffer));
-        cin.ignore();
         Enviar();
         }
         memset(buffer, 0, sizeof(buffer));
@@ -90,10 +93,11 @@ public:
     void Recibir()
     {
          recv(server, buffer, sizeof(buffer), 0);
-         cout << "El servidor dice: " << buffer << endl;
 
          string varRespuesta(buffer);
          string substringRespuesta=varRespuesta.substr(0,3);
+         string mensaje=varRespuesta.substr(3);
+         cout << "El servidor dice: " << mensaje << endl;
 
          if(substringRespuesta=="(F)"|| substringRespuesta=="(f)"){
             CerrarSocket();

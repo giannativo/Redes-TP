@@ -1,5 +1,6 @@
 #include <iostream>
 #include <winsock2.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -40,14 +41,15 @@ public:
         }
     }
 
-    string Recibir()
+    void Recibir()
     {
 
        recv(client, buffer, sizeof(buffer), 0);
-       cout << "El cliente dice: " << buffer << endl;
 
        string varRespuesta(buffer);
        string substringRespuesta=varRespuesta.substr(0,3);
+       string mensaje=varRespuesta.substr(3);
+       cout << "El cliente dice: " << mensaje << endl;
 
             if(substringRespuesta=="(F)"|| substringRespuesta=="(f)"){
                 CerrarSocket();
@@ -57,8 +59,8 @@ public:
     void Enviar()
     {
         cout << "Escribe el mensaje a enviar: " << endl;
-        cin.ignore();
-        cin.getline(this->buffer,1024);
+        fflush(stdin);
+        scanf("%[^\n]",this->buffer);
 
         string var(buffer);
         string substring=var.substr(0,3);
@@ -75,7 +77,6 @@ public:
         }else{
         cout << "Error de comando!" << endl;
         memset(buffer, 0, sizeof(buffer));
-        cin.ignore();
         Enviar();
         }
         memset(buffer, 0, sizeof(buffer));
