@@ -111,10 +111,10 @@ public:
             char rutaChar[1024] = "\0";
             string mensaje = "(T)Enviando archivo...";
             cout<<mensaje<<endl;
-            send(server, buffer, sizeof(buffer), 0);
+            send(client, buffer, sizeof(buffer), 0);
 
             strcpy(nombre, &ruta[0]);
-            SafeSend(this->server, nombre, sizeof(nombre));
+            SafeSend(this->client, nombre, sizeof(nombre));
             strcpy(rutaChar, &ruta[0]);
             File = fopen(rutaChar, "rb");
 
@@ -132,9 +132,9 @@ public:
                 sprintf(cSize, "%lu", Size);
                 fclose(File);
                 Sleep(1000);
-                SafeSend(this->server, cSize, MAX_PATH);
+                SafeSend(this->client, cSize, MAX_PATH);
                 Sleep(1000);
-                SafeSend(this->server,Buffer,Size);
+                SafeSend(this->client,Buffer,Size);
             }
             free(Buffer);
         }
