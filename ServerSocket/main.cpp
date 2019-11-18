@@ -55,6 +55,7 @@ public:
             CerrarSocket();
         }
         else if(substringRespuesta=="(T)"|| substringRespuesta=="(t)"){
+            cout<<"Se recibio solicitud de transferencia de archivo..."<<endl;
             cout<<"Recibiendo archivo..."<<endl;
             int Size;
             char Filesize[MAX_PATH] = "\0";
@@ -62,14 +63,14 @@ public:
 
             recv(this->client, nombre, sizeof(nombre), 0);
 
-            if(recv(this->client, Filesize, sizeof(Filesize), 0)){
-                Size = atoi((const char*)Filesize);
-                cout<< "Longitud del archivo: "<< Size<<endl;
-            }
+                if(recv(this->client, Filesize, sizeof(Filesize), 0)){
+                    Size = atoi((const char*)Filesize);
+                    cout<< "Longitud del archivo: "<< Size<<endl;
+                }
 
             char *Buffer = new char[Size];
             recv(this->client, Buffer, Size, 0);
-            cout<< "Se trajo el archivo: "<< nombre <<endl;
+            cout<< "Se recibio el archivo: "<< nombre <<endl;
             char new_name[50];
 
             cout<<"Ingresar nombre y extension del archivo a guardar: "<<endl;
@@ -80,7 +81,7 @@ public:
             fwrite(Buffer, 1, Size, File);
             fclose(File);
 
-            cout<<"Archivo recibido!"<<endl;
+            cout<<"Archivo recibido con exito!"<<endl;
             free(Buffer);
         }
         else{
@@ -109,6 +110,7 @@ public:
             unsigned long Size;
             char nombre[512]= "\0";
             char rutaChar[1024] = "\0";
+            cout<<"Comenzando transferencia de archivo..."<<endl;
             string mensaje = "(T)Enviando archivo...";
             cout<<mensaje<<endl;
             send(client, buffer, sizeof(buffer), 0);
@@ -118,24 +120,24 @@ public:
             strcpy(rutaChar, &ruta[0]);
             File = fopen(rutaChar, "rb");
 
-            if(!File){
-                cout<<"ERROR AL LEER EL ARCHIVO"<<endl;
-                cin.ignore();
-            }
-            else{
-                fseek(File, 0, SEEK_END);
-                Size = ftell(File);
-                fseek(File, 0, SEEK_SET);
-                Buffer = new char[Size];
-                fread(Buffer, Size, 1, File);
-                char cSize[MAX_PATH];
-                sprintf(cSize, "%lu", Size);
-                fclose(File);
-                Sleep(1000);
-                SafeSend(this->client, cSize, MAX_PATH);
-                Sleep(1000);
-                SafeSend(this->client,Buffer,Size);
-            }
+                if(!File){
+                    cout<<"ERROR AL LEER EL ARCHIVO"<<endl;
+                    cin.ignore();
+                }
+                else{
+                    fseek(File, 0, SEEK_END);
+                    Size = ftell(File);
+                    fseek(File, 0, SEEK_SET);
+                    Buffer = new char[Size];
+                    fread(Buffer, Size, 1, File);
+                    char cSize[MAX_PATH];
+                    sprintf(cSize, "%lu", Size);
+                    fclose(File);
+                    Sleep(1000);
+                    SafeSend(this->client, cSize, MAX_PATH);
+                    Sleep(1000);
+                    SafeSend(this->client,Buffer,Size);
+                }
             free(Buffer);
         }
         else if(substring=="(F)"|| substring=="(f)" ){
@@ -151,23 +153,23 @@ public:
     }
     int SafeSend(SOCKET s, char* buf, int buflen)
     {
-	int sendlen = 0;
-	int totalsend = 0;
-	int remaining = buflen;
+        int sendlen = 0;
+        int totalsend = 0;
+        int remaining = buflen;
 
-	while(sendlen != buflen)
-	{
-		sendlen = send(s, &buf[totalsend], remaining, 0);
+            while(sendlen != buflen)
+            {
+                sendlen = send(s, &buf[totalsend], remaining, 0);
 
-		if(sendlen == SOCKET_ERROR)
-		{
-			return SOCKET_ERROR;
-		}
+                if(sendlen == SOCKET_ERROR)
+                {
+                    return SOCKET_ERROR;
+                }
 
-		totalsend = totalsend + sendlen;
-		remaining = sendlen - totalsend;
-	}
-    return 0;
+                totalsend = totalsend + sendlen;
+                remaining = sendlen - totalsend;
+            }
+        return 0;
     }
 
     void CerrarSocket()
