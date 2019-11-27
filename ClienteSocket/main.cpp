@@ -72,7 +72,7 @@ public:
             send(server, buffer, sizeof(buffer), 0);
 
             strcpy(nombre, &ruta[0]);
-            SafeSend(this->server, nombre, sizeof(nombre));
+            Envio(this->server, nombre, sizeof(nombre));
             strcpy(rutaChar, &ruta[0]);
             File = fopen(rutaChar, "rb");
 
@@ -90,9 +90,9 @@ public:
                     sprintf(cSize, "%lu", Size);
                     fclose(File);
                     Sleep(1000);
-                    SafeSend(this->server, cSize, MAX_PATH);
+                    Envio(this->server, cSize, MAX_PATH);
                     Sleep(1000);
-                    SafeSend(this->server,Buffer,Size);
+                    Envio(this->server,Buffer,Size);
                 }
             free(Buffer);
         }
@@ -153,24 +153,19 @@ public:
         memset(buffer, 0, sizeof(buffer));
     }
 
-    int SafeSend(SOCKET s, char* buf, int buflen)
+    int Envio(SOCKET socket, char* buffer, int longitud_buffer)
     {
-        int sendlen = 0;
-        int totalsend = 0;
-        int remaining = buflen;
-
-            while(sendlen != buflen)
-            {
-                sendlen = send(s, &buf[totalsend], remaining, 0);
-
-                if(sendlen == SOCKET_ERROR)
-                {
-                    return SOCKET_ERROR;
-                }
-
-                totalsend = totalsend + sendlen;
-                remaining = sendlen - totalsend;
+        int bytes_a_transferir = 0;
+        int totalenviado = 0;
+        int bytes_faltantes = longitud_buffer;
+        while(bytes_a_transferir != longitud_buffer){
+            bytes_a_transferir = send(socket, &buffer[totalenviado], bytes_faltantes, 0);
+            if(bytes_a_transferir == SOCKET_ERROR){
+                return SOCKET_ERROR;
             }
+            totalenviado = totalenviado + bytes_a_transferir;
+            bytes_faltantes = bytes_a_transferir - totalenviado;
+        }
         return 0;
     }
 
